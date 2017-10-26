@@ -1,0 +1,16 @@
+artwork/snd/color/images/2017_mlk_test4.mp3 artwork/snd/curriculum/description/12348.mp3
+artwork/snd/color/images/2017_mlk_test.mp3 artwork/snd/curriculum/description/12344.mp3
+artwork/snd/color/images/2017_mlk_test1.mp3 artwork/snd/curriculum/description/12345.mp3
+artwork/snd/color/images/2017_mlk_test2.mp3 artwork/snd/curriculum/description/12346.mp3
+artwork/snd/color/images/2017_mlk_test3.mp3 artwork/snd/curriculum/description/12347.mp3
+artwork/snd/color/images/2017_mlk_test4.mp3 artwork/snd/curriculum/description/12348.mp3
+artwork/snd/color/images/2017_mlk_test.mp3 artwork/snd/curriculum/description/12344.mp3
+artwork/snd/color/images/2017_mlk_test1.mp3 artwork/snd/curriculum/description/12345.mp3
+artwork/snd/color/images/2017_mlk_test2.mp3 artwork/snd/curriculum/description/12346.mp3
+artwork/snd/color/images/2017_mlk_test3.mp3 artwork/snd/curriculum/description/12347.mp3
+artwork/snd/color/images/2017_mlk_test4.mp3 artwork/snd/curriculum/description/12348.mp3
+artwork/snd/color/images/2017_mlk_test.mp3 artwork/snd/curriculum/description/12344.mp3
+artwork/snd/color/images/2017_mlk_test1.mp3 artwork/snd/curriculum/description/12345.mp3
+artwork/snd/color/images/2017_mlk_test2.mp3 artwork/snd/curriculum/description/12346.mp3
+artwork/snd/color/images/2017_mlk_test3.mp3 artwork/snd/curriculum/description/12347.mp3
+artwork/snd/color/images/2017_mlk_test4.mp3 artwork/snd/curriculum/description/12348.mp3
