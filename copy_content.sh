@@ -8,13 +8,22 @@ relativePath="$(cd "$(dirname "$1")"; pwd)/"
 
 function moveFiles() {
   echo "Copying files"
-  touch paths.txt
-  pathsFile=paths.txt
+  
+  if [[ -f copy_errors.txt ]];
+  then 
+    rm copy_errors.txt
+  fi
   
   while IFS='' read -r line
   do
-    echo 'LINE VALUE: $line';
-  done < $listFile
+    cp $line;
+    if [[ "$?" != "0" ]];
+    then
+      touch copy_errors.txt;
+      echo "An error occured when copying this: $line" >> copy_errors.txt;
+    fi
+    echo "Copied $line";
+  done < "$listFile"
   
 }
 
