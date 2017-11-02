@@ -42,33 +42,44 @@ function update_manifest() {
     file_extention="mp3"
     cd $dir_name
     
-    rm index
+    rm index 
     touch index
     manifestFile=index
     echo "" >> index #REMOVE TODO
-    
     while IFS='' read -r lineitem
     do
+    	echo "LINE ITEM $lineitem";
       if [[ -s $manifestFile && "$lineitem" =~ "$filename" ]];
       then
         echo "Found a match!: $lineitem";
+        #lineNumber=`expr $lineNumber + 1`;
         #replaceText=$lineitem | sed 's/$lineitem/$filename/';
-        #echo $lineitem | sed '/$lineitem/d' >$manifestFile;
-        lineNumber=$(awk '/$filename/{print NR}' $manifestFile); #NOT WORKING RIGHT TODO
-        #echo $lineNumber
-        #echo "WTH, MAN 4589757" >> $manifestFile
-        sed -i "/\b\($lineitem\|$lineitem\)\b/d" $manifestFile && echo $filename >> $manifestFile #SEEMS TO WORK
+        
+        #sed  -ie "/\b\($lineitem\|$lineitem\)\b/d" $manifestFile && echo $filename >> $manifestFile #SEEMS TO WORK
+        #sed -i ' ' -e "/\b\($lineitem\|$lineitem\)\b/d" $manifestFile && echo $filename >> $manifestFile #SEEMS TO WORK
+        #sed -i ' ' -e "/\b\($lineitem\([0-9.])\|$lineitem\(\))\b/d" $manifestFile #&& echo $filename >> $manifestFile #TEST1
+        #sed -e "/\b\($lineitem\|$lineitem\)\b/d" $manifestFile && echo $filename >> $manifestFile #SEEMS TO WORK
+				#echo $lineitem | sed -ie  's/$lineitem/$filename/g' * > $manifestFile; #NOT WORKING
+				nonCheckSum=$(echo $filename | sed 's/$lineitem/$filename/');
+				#sed  '/^$lineitem/d'  $manifestFile
         #awk '!/$lineitem/d' > $manifestFile && echo $filename >> $manifestFile #DELETES ALL BUT THE REPLACED LINE TODO
+				#UPDATE
+				awk '!/$filename/{ if ($2 ~ /[0-9]/) print }1' $manifestFile  && echo $filename >> $manifestFile 
+				break;
+				#echo "Line Item $lineitem";
         #echo "WTH, MAN 8966547" >> $manifestFile
         
         #echo $lineitem | sed 's/$lineitem/$filename/' >$manifestFile;
         #echo "test123" | sed 's/123/321/' >$manifestFile;
+				lineNumber=0;
       else
+      	#FOR TESTING ONLY!!! TODO
         echo "Creating new entry for $filename";
         #echo "Dummy" >> $manifestFile;
-        echo "WTH, MAN 4589757" >> $manifestFile
+        echo "Random Text 4589757" >> $manifestFile
         echo $filename "1234569" >> $manifestFile;
-        echo "WTH, MAN 8966547" >> $manifestFile
+        echo "More Random Text 8966547" >> $manifestFile
+        break;
         #replaceText=$lineitem | sed 's/$lineitem/$filename/';
         #echo $filename | tee -a "index" #GOOD
       fi
