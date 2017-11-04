@@ -20,6 +20,7 @@ function update_manifest() {
   m_u_results=m_update_results.txt;
 	updatedFileCount=0;
 	totalFileCount=0;
+	existingEntryUpdated=false;
   
   #Read the updateListTextFile and loop through line by line
   while IFS='' read -r line
@@ -36,10 +37,35 @@ function update_manifest() {
 			#If the index file is located in the directory, proceed
 			if [[ -f index ]]; 
 			then
-				echo $filename >> index; #Add the file name to the end of the index file
-    		echo "Successfully added $filename to $dir_name/init" >> $relativePath$m_u_results;
-    		echo "Adding $filename to ($dir_name/index)";
-    		updatedFileCount=`expr $updatedFileCount + 1`;
+				
+				#while IFS='' read mLine
+				while IFS='' read -r mLine || [[ -n "$mLine" ]];
+				do
+					#echo "THE MLINE $mLine.";
+					#Read the index file line by line and look for a match for the string in the filename variable
+					if [[ "$mLine" =~ "$filename" ]];
+					then
+						echo "Found a match for $filename.";
+						echo "Found on line $mLine.";
+						echo "";
+						sed -i '' "s/$mLine/$filename/" index; #Replace inline
+						existingEntryUpdated=true;
+						wait
+					fi
+					
+					#Reached the End Of FIle (EOF)
+					if  [[ -z "$mLine" ]];
+					then
+						echo "EOF.  An existing entry was updated?: $existingEntryUpdated";
+					fi
+				done < index
+				wait
+				
+				
+				#echo $filename >> index; #Add the file name to the end of the index file
+    		#echo "Successfully added $filename to $dir_name/init" >> $relativePath$m_u_results;
+    		#echo "Adding $filename to ($dir_name/index)";
+    		#updatedFileCount=`expr $updatedFileCount + 1`;
 			else
 				#Create and error file and write the errors to it.
 				touch m_update_errors.txt;
