@@ -49,19 +49,20 @@ function update_manifest() {
 						echo "Found on line $mLine.";
 						echo "";
 						sed -i '' "s/$mLine/$filename/" index; #Replace inline
+						echo "Successfully updated $filename within $dir_name/init" >> $relativePath$m_u_results;
+						updatedFileCount=`expr $updatedFileCount + 1`;
 						existingEntryUpdated=true;
 						wait
 					fi
 					
 					#Reached the End Of FIle (EOF)
-					if  [[ -z "$mLine" ]];
+					if  [[ -z "$mLine" && "$existingEntryUpdated" == true ]];
 					then
 						echo "EOF.  An existing entry was updated?: $existingEntryUpdated";
 					fi
 				done < index
 				wait
-				
-				
+								
 				#echo $filename >> index; #Add the file name to the end of the index file
     		#echo "Successfully added $filename to $dir_name/init" >> $relativePath$m_u_results;
     		#echo "Adding $filename to ($dir_name/index)";
