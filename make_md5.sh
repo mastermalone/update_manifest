@@ -45,7 +45,7 @@ function update_manifest() {
     rm index 
     touch index
     manifestFile=index
-    echo "" >> index #REMOVE TODO
+    echo "file0.mp3 4589713" >> $manifestFile >> index #REMOVE TODO
     while IFS='' read -r lineitem
     do
     	echo "LINE ITEM $lineitem";
@@ -74,11 +74,12 @@ function update_manifest() {
 				lineNumber=0;
       else
       	#FOR TESTING ONLY!!! TODO
-        echo "Creating new entry for $filename";
-        #echo "Dummy" >> $manifestFile;
-        echo "Random Text 4589757" >> $manifestFile
+        echo "Creating new entry for $filename";        
+        echo "file1.mp3 4589757" >> $manifestFile
         echo $filename "1234569" >> $manifestFile;
-        echo "More Random Text 8966547" >> $manifestFile
+        echo "file2.mp3 8966547" >> $manifestFile
+        echo "test100.mp3 8966547" >> $manifestFile
+        echo "test5.png 8966547XXX" >> $manifestFile
         break;
         #replaceText=$lineitem | sed 's/$lineitem/$filename/';
         #echo $filename | tee -a "index" #GOOD

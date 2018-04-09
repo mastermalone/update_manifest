@@ -2,5 +2,7 @@ manifest/artwork/snd/curriculum/description/test1.mp3
 manifest/artwork/snd/efl/test2.mp3
 manifest/artwork/snd/glossary/test3.mp3
 manifest/artwork/snd/items/test4.mp3
+manifest/artwork/snd/cards/game_holiday_music.mp3
+manifest/artwork/snd/cards/game_music.mp3
 manifest/artwork/snd/cards/test5.mp3
 manifest/artwork/snd/games/basics/test6.mp3

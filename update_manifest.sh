@@ -20,26 +20,53 @@ function update_manifest() {
   m_u_results=m_update_results.txt;
 	updatedFileCount=0;
 	totalFileCount=0;
+	existingEntryUpdated=false;
   
   #Read the updateListTextFile and loop through line by line
   while IFS='' read -r line
   do
     fspec=$relativePath$line; #The full path of the file 
     filename="${fspec##*/}";  # get filename
-    dir_name="${fspec%/*}"; # get directory/path name
-    
+    dir_name="${fspec%/*}"; #get directory/path name
+    existingEntryUpdated=false; #Set this variable to false to ensure that the non-existing entries from the list get added to the file
     #cd $dir_name; 
     if [[  -d $dir_name ]]; #If the directory exists, go to it
     then 
     	#Go to the diectory listed in the loaded text file
     	cd $dir_name; 
+    	
 			#If the index file is located in the directory, proceed
 			if [[ -f index ]]; 
 			then
-				echo $filename >> index; #Add the file name to the end of the index file
-    		echo "Successfully added $filename to $dir_name/init" >> $relativePath$m_u_results;
-    		echo "Adding $filename to ($dir_name/index)";
-    		updatedFileCount=`expr $updatedFileCount + 1`;
+				
+				#mLine is the matching line
+				while IFS='' read -r mLine || [[ -n "$mLine" ]];
+				do
+					#echo "THE MLINE $mLine.";
+					#Read the index file line by line and look for a match for the string in the filename variable
+					if [[ "$mLine" =~ "$filename" ]];
+					then
+						echo "Found a match for $filename.";
+						echo "Found on line $mLine.";
+						echo "";
+						sed -i '' "s/$mLine/$filename/" index; #Replace inline
+						echo "Successfully updated $filename within $dir_name/init" >> $relativePath$m_u_results;
+						updatedFileCount=`expr $updatedFileCount + 1`;
+						existingEntryUpdated=true;
+					wait 
+					fi
+					
+				done < index
+				wait
+				 
+				if ! ( $existingEntryUpdated );
+          then
+          echo "THE VALUE OF existingEntryUpdated: $existingEntryUpdated";
+          echo $filename >> index; #Add the file name to the end of the index file
+          echo "Successfully added $filename to $dir_name/init" >> $relativePath$m_u_results;
+          echo "Adding $filename to ($dir_name/index)";
+          updatedFileCount=`expr $updatedFileCount + 1`;
+        fi
 			else
 				#Create and error file and write the errors to it.
 				touch m_update_errors.txt;
@@ -55,7 +82,7 @@ function update_manifest() {
     totalFileCount=`expr $totalFileCount + 1`
   done < "$updateListTextFile"
   wait 
-  echo "The process has finished.  There were $updatedFileCount out of $totalFileCount index files updated.";
+  echo "The process has finished.  There were $updatedFileCount out of $totalFileCount entries updated.";
 }
 
 update_manifest
