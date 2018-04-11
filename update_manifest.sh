@@ -8,19 +8,19 @@ function update_manifest() {
   
   if [[ -f m_update_results.txt ]];
   then
-  	rm m_update_results.txt
+    rm m_update_results.txt
   fi
   
-	if [[ -f m_update_errors.txt ]];
-	then
-		rm m_update_errors.txt;
-	fi
+  if [[ -f m_update_errors.txt ]];
+  then
+    rm m_update_errors.txt;
+  fi
   
   touch m_update_results.txt;
   m_u_results=m_update_results.txt;
-	updatedFileCount=0;
-	totalFileCount=0;
-	existingEntryUpdated=false;
+  updatedFileCount=0;
+  totalFileCount=0;
+  existingEntryUpdated=false;
   
   #Read the updateListTextFile and loop through line by line
   while IFS='' read -r line
@@ -32,51 +32,51 @@ function update_manifest() {
     #cd $dir_name; 
     if [[  -d $dir_name ]]; #If the directory exists, go to it
     then 
-    	#Go to the diectory listed in the loaded text file
-    	cd $dir_name; 
-    	
-			#If the index file is located in the directory, proceed
-			if [[ -f index ]]; 
-			then
-				
-				#mLine is the matching line
-				while IFS='' read -r mLine || [[ -n "$mLine" ]];
-				do
-					#echo "THE MLINE $mLine.";
-					#Read the index file line by line and look for a match for the string in the filename variable
-					if [[ "$mLine" =~ "$filename" ]];
-					then
-						echo "Found a match for $filename.";
-						echo "Found on line $mLine.";
-						echo "";
-						sed -i '' "s/$mLine/$filename/" index; #Replace inline
-						echo "Successfully updated $filename within $dir_name/init" >> $relativePath$m_u_results;
-						updatedFileCount=`expr $updatedFileCount + 1`;
-						existingEntryUpdated=true;
-					wait 
-					fi
-					
-				done < index
-				wait
-				 
-				if ! ( $existingEntryUpdated );
+      #Go to the diectory listed in the loaded text file
+      cd $dir_name; 
+      
+      #If the index file is located in the directory, proceed
+      if [[ -f index ]]; 
+      then
+        
+        #mLine is the matching line
+        while IFS='' read -r mLine || [[ -n "$mLine" ]];
+        do
+          #echo "THE MLINE $mLine.";
+          #Read the index file line by line and look for a match for the string in the filename variable
+          if [[ "$mLine" =~ ^$filename ]];
           then
-          echo "THE VALUE OF existingEntryUpdated: $existingEntryUpdated";
+            echo "Found a match for $filename.";
+            echo "Found on line $mLine.";
+            echo "";
+            sed -i '' "s/$mLine/$filename/" index; #Replace inline
+            echo "Successfully updated $filename within $dir_name/init" >> $relativePath$m_u_results;
+            updatedFileCount=`expr $updatedFileCount + 1`;
+            existingEntryUpdated=true;
+          wait 
+          fi
+          
+        done < index
+        wait
+         
+        if ! ( $existingEntryUpdated );
+          then
+          #echo "THE VALUE OF existingEntryUpdated: $existingEntryUpdated";
           echo $filename >> index; #Add the file name to the end of the index file
           echo "Successfully added $filename to $dir_name/init" >> $relativePath$m_u_results;
           echo "Adding $filename to ($dir_name/index)";
           updatedFileCount=`expr $updatedFileCount + 1`;
         fi
-			else
-				#Create and error file and write the errors to it.
-				touch m_update_errors.txt;
-				manifestErrors=m_update_errors.txt;
-				echo "An error occured.  The index file for ($dir_name/) does not exist." ;
-  			echo "An error occured.  The index file for ($dir_name/) does not exist." >> $relativePath$manifestErrors;
-			fi
+      else
+        #Create and error file and write the errors to it.
+        touch m_update_errors.txt;
+        manifestErrors=m_update_errors.txt;
+        echo "An error occured.  The index file for ($dir_name/) does not exist." ;
+        echo "An error occured.  The index file for ($dir_name/) does not exist." >> $relativePath$manifestErrors;
+      fi
     else
-    	touch m_update_errors.txt;
-  		echo "An error occured.  The following directory does not exist: $dir_name/" >> m_update_errors.txt
+      touch m_update_errors.txt;
+      echo "An error occured.  The following directory does not exist: $dir_name/" >> m_update_errors.txt
     fi
     
     totalFileCount=`expr $totalFileCount + 1`
